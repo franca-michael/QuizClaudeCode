@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* Tema: segue prefers-color-scheme; o toggle define data-theme="light|dark" em <html>. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(
+      :root:not([data-theme="light"]),
+      :root:not([data-theme="light"]) *
+    ) {
+      @slot;
+    }
+  }
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+}
+
+:root {
+  --background: #faf9f5;
+  --foreground: #1f1e1d;
+  --muted: #6b6963;
+  --surface: #ffffff;
+  --border: #e2e0d8;
+  --accent: #d97757;
+  --accent-foreground: #1f1e1d;
+  --success: #2f7d4f;
+  --danger: #b3382c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #1f1e1d;
+    --foreground: #faf9f5;
+    --muted: #b5b2a8;
+    --surface: #2b2a28;
+    --border: #3d3b37;
+    --success: #5fbf86;
+    --danger: #f08a7e;
+  }
+}
+
+:root[data-theme="dark"] {
+  --background: #1f1e1d;
+  --foreground: #faf9f5;
+  --muted: #b5b2a8;
+  --surface: #2b2a28;
+  --border: #3d3b37;
+  --success: #5fbf86;
+  --danger: #f08a7e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
