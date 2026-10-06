@@ -1,0 +1,59 @@
+-- Seed reproduzível: limpa e recarrega o banco de perguntas.
+-- Todas as afirmações foram conferidas na documentação oficial
+-- (https://code.claude.com/docs) em 2026-10-06; cada pergunta aponta para a
+-- página específica que a sustenta. Reconferir ao atualizar o conteúdo.
+-- Distribuição: 45 perguntas, 15 por nível; 23 verdadeiras / 22 falsas.
+truncate table answer_events;
+delete from questions;
+
+insert into questions (statement, is_true, explanation, difficulty, topic, source_url) values
+-- ===== business (8 V / 7 F) =====
+('O Claude Code é um assistente agêntico que pode ler arquivos, editar código e executar comandos no projeto.', true, 'Ele age sobre a base de código, não apenas responde perguntas como um chat.', 'business', 'conceitos', 'https://code.claude.com/docs/en/overview'),
+('O Claude Code só funciona dentro do navegador, sem acesso ao terminal.', false, 'Ele roda no terminal e também em extensões de IDE, no app desktop e na web.', 'business', 'conceitos', 'https://code.claude.com/docs/en/overview'),
+('No modo Manual, o Claude Code pede permissão antes de editar arquivos ou executar comandos.', true, 'O sistema de permissões é um pilar de segurança: você escolhe aprovar cada ação ou liberar ações específicas.', 'business', 'seguranca', 'https://code.claude.com/docs/en/security'),
+('Usar o Claude Code dispensa qualquer revisão humana do código gerado.', false, 'O usuário continua responsável por revisar o código e os comandos propostos.', 'business', 'governanca', 'https://code.claude.com/docs/en/security'),
+('O Claude Code só serve para quem programa em Python.', false, 'Ele lê e escreve código em qualquer linguagem e também ajuda em tarefas de linha de comando.', 'business', 'conceitos', 'https://code.claude.com/docs/en/how-claude-code-works'),
+('O Claude Code pode ajudar a explicar uma base de código, escrever testes e documentar.', true, 'Não se limita a gerar código novo: serve para entender, testar e documentar.', 'business', 'casos-de-uso', 'https://code.claude.com/docs/en/overview'),
+('O Claude Code é um produto da Anthropic.', true, 'Ele é desenvolvido e mantido pela Anthropic, a mesma empresa dos modelos Claude.', 'business', 'conceitos', 'https://code.claude.com/docs/en/security'),
+('O Claude Code roda obrigatoriamente apenas em servidores da Anthropic, sem nenhum processo na máquina do usuário.', false, 'O ambiente padrão é o local, na sua máquina; a execução na nuvem é uma opção.', 'business', 'conceitos', 'https://code.claude.com/docs/en/how-claude-code-works'),
+('Cada nova sessão do Claude Code começa com a conversa anterior carregada automaticamente.', false, 'Cada sessão começa com contexto novo; o que persiste vem do CLAUDE.md e da memória automática.', 'business', 'conceitos', 'https://code.claude.com/docs/en/memory'),
+('Equipes podem compartilhar instruções do projeto com o Claude Code versionando-as no repositório.', true, 'Arquivos como o CLAUDE.md podem ser versionados e compartilhados com o time.', 'business', 'governanca', 'https://code.claude.com/docs/en/memory'),
+('O Claude Code garante que todo código gerado está livre de bugs.', false, 'Modelos podem errar; testes e revisão continuam necessários.', 'business', 'governanca', 'https://code.claude.com/docs/en/best-practices'),
+('Uma boa prática é pedir ao Claude Code que rode os testes para validar uma mudança.', true, 'Dar um meio de verificação ao Claude melhora a qualidade do resultado.', 'business', 'casos-de-uso', 'https://code.claude.com/docs/en/best-practices'),
+('O Claude Code pode ser usado para investigar e corrigir bugs em um projeto existente.', true, 'Depuração de código existente é um dos usos mais comuns.', 'business', 'casos-de-uso', 'https://code.claude.com/docs/en/overview'),
+('Quanto mais vago o pedido, mais previsível é o resultado do Claude Code.', false, 'Pedidos específicos e com contexto exigem menos correções e geram resultados melhores.', 'business', 'conceitos', 'https://code.claude.com/docs/en/best-practices'),
+('Ferramentas de IA como o Claude Code podem acelerar tarefas repetitivas de desenvolvimento.', true, 'Automatizar tarefas repetitivas, como escrever testes ou corrigir lint, é um dos principais ganhos.', 'business', 'casos-de-uso', 'https://code.claude.com/docs/en/overview'),
+
+-- ===== intermediate (7 V / 8 F) =====
+('O arquivo CLAUDE.md serve para dar ao Claude instruções e contexto persistente sobre o projeto.', true, 'Ele é lido no início de cada sessão como contexto do projeto.', 'intermediate', 'claude-md', 'https://code.claude.com/docs/en/memory'),
+('O comando /init cria um CLAUDE.md inicial analisando o projeto.', true, 'É a forma rápida de gerar um ponto de partida para o CLAUDE.md.', 'intermediate', 'comandos', 'https://code.claude.com/docs/en/commands'),
+('O comando /clear apaga os arquivos do projeto.', false, 'Ele inicia uma nova conversa com contexto vazio; os arquivos não são afetados.', 'intermediate', 'comandos', 'https://code.claude.com/docs/en/commands'),
+('O comando /compact resume a conversa para liberar espaço na janela de contexto.', true, 'Compactar mantém o essencial e reduz o uso de contexto.', 'intermediate', 'comandos', 'https://code.claude.com/docs/en/commands'),
+('No plan mode, o Claude executa imediatamente todas as edições sem mostrar um plano.', false, 'O plan mode pesquisa e propõe um plano, sem editar seus arquivos até você aprová-lo.', 'intermediate', 'permissoes', 'https://code.claude.com/docs/en/permission-modes'),
+('Existe um comando /help que lista os comandos disponíveis.', true, 'O /help mostra ajuda e os comandos disponíveis na sessão.', 'intermediate', 'comandos', 'https://code.claude.com/docs/en/commands'),
+('A janela de contexto é ilimitada, então nunca é preciso gerenciar o tamanho da conversa.', false, 'O contexto é limitado e o desempenho cai quando ele enche; por isso existem /clear e /compact.', 'intermediate', 'contexto', 'https://code.claude.com/docs/en/context-window'),
+('Quanto mais longo e detalhado o CLAUDE.md, mais consistentemente o Claude segue cada regra.', false, 'Arquivos longos fazem as regras importantes se perderem; mantenha-o curto e objetivo.', 'intermediate', 'claude-md', 'https://code.claude.com/docs/en/best-practices'),
+('Misturar tarefas não relacionadas na mesma conversa não afeta o desempenho do Claude.', false, 'Contexto irrelevante enche a janela e pode reduzir a qualidade; use /clear entre tarefas.', 'intermediate', 'contexto', 'https://code.claude.com/docs/en/best-practices'),
+('Os modos de permissão são fixos e não podem ser alterados durante a sessão.', false, 'É possível alternar entre os modos durante o uso, por exemplo com Shift+Tab.', 'intermediate', 'permissoes', 'https://code.claude.com/docs/en/permission-modes'),
+('O Claude Code consegue ler imagens quando elas são fornecidas na conversa.', true, 'É possível colar ou arrastar imagens, como capturas de tela, para análise.', 'intermediate', 'fluxo', 'https://code.claude.com/docs/en/best-practices'),
+('Pedir ao Claude que explore e planeje antes de implementar costuma melhorar resultados em tarefas complexas.', true, 'Separar planejamento e execução reduz o risco de resolver o problema errado.', 'intermediate', 'fluxo', 'https://code.claude.com/docs/en/best-practices'),
+('O CLAUDE.md só pode existir na raiz do projeto.', false, 'Ele também pode ficar em .claude/ ou no diretório do usuário, em ~/.claude/CLAUDE.md.', 'intermediate', 'claude-md', 'https://code.claude.com/docs/en/memory'),
+('O Claude Code integra-se ao Git e pode ajudar a escrever mensagens de commit.', true, 'Ele trabalha direto com o Git: faz stage, escreve mensagens de commit e abre pull requests.', 'intermediate', 'fluxo', 'https://code.claude.com/docs/en/overview'),
+('Comandos de barra (slash commands) só podem ser criados pela Anthropic.', false, 'Você pode criar comandos próprios, hoje definidos como skills em .claude/skills/ ou em .claude/commands/.', 'intermediate', 'comandos', 'https://code.claude.com/docs/en/skills'),
+
+-- ===== advanced (8 V / 7 F) =====
+('Hooks permitem executar comandos automaticamente em eventos do ciclo de vida, como antes ou depois do uso de uma ferramenta.', true, 'Hooks dão controle determinístico sobre o comportamento do Claude Code.', 'advanced', 'hooks', 'https://code.claude.com/docs/en/hooks'),
+('O MCP (Model Context Protocol) permite conectar o Claude Code a ferramentas e fontes de dados externas.', true, 'Servidores MCP expõem ferramentas, bancos de dados e APIs ao Claude.', 'advanced', 'mcp', 'https://code.claude.com/docs/en/mcp'),
+('Por padrão, subagents herdam todo o histórico da conversa principal.', false, 'Cada subagent começa com uma janela de contexto própria e isolada e devolve um resumo; só um fork herda a conversa.', 'advanced', 'subagents', 'https://code.claude.com/docs/en/sub-agents'),
+('É possível rodar o Claude Code de forma não interativa, via script, com a flag -p.', true, 'O modo não interativo (print) permite automação em scripts e CI.', 'advanced', 'headless', 'https://code.claude.com/docs/en/headless'),
+('Skills são pacotes de instruções que o Claude pode carregar quando relevantes à tarefa.', true, 'Só a descrição fica no contexto; o conteúdo completo é carregado sob demanda.', 'advanced', 'skills', 'https://code.claude.com/docs/en/skills'),
+('Configurações de permissões do projeto podem ser versionadas em .claude/settings.json.', true, 'Esse arquivo é compartilhado com todos do projeto via repositório; o .claude/settings.local.json é pessoal.', 'advanced', 'configuracao', 'https://code.claude.com/docs/en/settings'),
+('Hooks só podem ser configurados pela interface web, nunca em arquivos de configuração.', false, 'Hooks são definidos em arquivos de configuração, como ~/.claude/settings.json e .claude/settings.json.', 'advanced', 'hooks', 'https://code.claude.com/docs/en/hooks'),
+('Servidores MCP só podem ser executados na nuvem da Anthropic.', false, 'Servidores MCP podem rodar localmente (stdio) ou ser remotos (HTTP).', 'advanced', 'mcp', 'https://code.claude.com/docs/en/mcp'),
+('Subagents podem ser usados para delegar tarefas e preservar o contexto do agente principal.', true, 'Delegar pesquisa a um subagent mantém a saída extensa fora do contexto principal; só o resumo volta.', 'advanced', 'subagents', 'https://code.claude.com/docs/en/sub-agents'),
+('Git worktrees permitem rodar várias sessões do Claude em paralelo, em cópias isoladas do repositório.', true, 'Cada worktree tem seu próprio diretório e branch, evitando conflitos de arquivos (claude --worktree).', 'advanced', 'worktrees', 'https://code.claude.com/docs/en/worktrees'),
+('Um hook nunca consegue bloquear uma ação do Claude antes de ela acontecer.', false, 'Hooks PreToolUse executam antes da ferramenta e podem bloqueá-la.', 'advanced', 'hooks', 'https://code.claude.com/docs/en/hooks'),
+('O Claude Agent SDK permite construir agentes programaticamente usando as mesmas capacidades do Claude Code.', true, 'O SDK (Python e TypeScript) expõe as mesmas ferramentas, o laço agêntico e o gerenciamento de contexto.', 'advanced', 'sdk', 'https://code.claude.com/docs/en/agent-sdk/overview'),
+('Skills e CLAUDE.md são exatamente a mesma coisa e carregam sempre todo o conteúdo no contexto.', false, 'O CLAUDE.md é contexto persistente do projeto; skills são carregadas sob demanda quando relevantes.', 'advanced', 'skills', 'https://code.claude.com/docs/en/skills'),
+('O Claude Code não pode ser executado em pipelines de CI, apenas em sessões interativas.', false, 'O modo não interativo (claude -p) é apropriado para CI, scripts e hooks de pré-commit.', 'advanced', 'headless', 'https://code.claude.com/docs/en/headless'),
+('Ferramentas MCP não estão sujeitas ao sistema de permissões do Claude Code.', false, 'As ferramentas MCP também passam pelo controle de permissões, com regras como mcp__servidor__ferramenta.', 'advanced', 'mcp', 'https://code.claude.com/docs/en/mcp');
